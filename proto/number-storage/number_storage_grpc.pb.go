@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.22.0
-// source: number-storage.proto
+// source: number_storage.proto
 
 package number_storage
 
@@ -138,5 +138,5 @@ var NumberStorageService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "number-storage.proto",
+	Metadata: "number_storage.proto",
 }

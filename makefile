@@ -5,4 +5,4 @@ migrate:
 	migrate -path ./migrations -database 'postgres://postgres:password12@localhost:5432/postgres?sslmode=disable' up
 
 protobuf:
-	protoc -I ./proto/ --go_out ./ --go-grpc_out ./ ./proto/number-storage.proto
+	protoc -I ./proto/ --go_out ./ --go-grpc_out ./ ./proto/number_storage.proto

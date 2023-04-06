@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pb;
 
-option go_package = "./proto/number-storage";
+option go_package = "./proto/number_storage";
 
 import "google/protobuf/empty.proto";
 
