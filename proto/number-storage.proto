@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "./proto/number-storage";
+
+import "google/protobuf/empty.proto";
+
+message NumberResponse {
+    int64 number = 1;
+}
+
+message NumberRequest {
+    int64 number = 1;
+}
+
+service NumberStorageService {
+    rpc GetNumber (google.protobuf.Empty) returns (NumberResponse);
+    rpc UpdateNumber (NumberRequest) returns (NumberResponse);
+}
