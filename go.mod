@@ -3,6 +3,8 @@ module number-storage-service
 go 1.20
 
 require (
+	github.com/jmoiron/sqlx v1.3.5
+	github.com/lib/pq v1.2.0
 	google.golang.org/grpc v1.54.0
 	google.golang.org/protobuf v1.30.0
 )
