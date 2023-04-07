@@ -2,17 +2,17 @@ package repository
 
 import "github.com/jmoiron/sqlx"
 
-type NumberStorage interface {
-	GetNumber() (int64, error)
-	UpdateNumber(number int64) (int64, error)
-}
-
 type NumberStoragePostgreSQL struct {
 	db *sqlx.DB
 }
 
 func NewNumberStoragePostgreSQL(db *sqlx.DB) *NumberStoragePostgreSQL {
 	return &NumberStoragePostgreSQL{db: db}
+}
+
+type NumberStorage interface {
+	GetNumber() (int64, error)
+	UpdateNumber(number int64) (error)
 }
 
 func (r *NumberStoragePostgreSQL) GetNumber() (int64, error) {
@@ -29,7 +29,7 @@ func (r *NumberStoragePostgreSQL) GetNumber() (int64, error) {
 	return number, nil
 }
 
-func (r *NumberStoragePostgreSQL) UpdateNumber(number int64) (int64, error) {
+func (r *NumberStoragePostgreSQL) UpdateNumber(number int64) (error) {
 	query := `
 	UPDATE storage
 	SET number = $1
@@ -37,8 +37,8 @@ func (r *NumberStoragePostgreSQL) UpdateNumber(number int64) (int64, error) {
 	`
 	_, err := r.db.Exec(query, number)
 	if err != nil {
-		return 0, err
+		return err
 	}
 	
-	return number, nil
+	return nil
 }
