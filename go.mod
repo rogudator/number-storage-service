@@ -1,4 +1,4 @@
-module number-storage-service
+module github.com/rogudator/number-storage-service
 
 go 1.20
 

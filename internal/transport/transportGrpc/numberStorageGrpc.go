@@ -2,7 +2,7 @@ package transportGrpc
 
 import (
 	"context"
-	"number-storage-service/proto/number_storage"
+	"github.com/rogudator/number-storage-service/proto/number_storage"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 )

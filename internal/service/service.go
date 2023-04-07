@@ -1,6 +1,6 @@
 package service
 
-import "number-storage-service/internal/repository"
+import "github.com/rogudator/number-storage-service/internal/repository"
 
 type Service struct {
 	NumberStorageService

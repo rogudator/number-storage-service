@@ -1,8 +1,8 @@
 package transportGrpc
 
 import (
-	"number-storage-service/internal/service"
-	"number-storage-service/proto/number_storage"
+	"github.com/rogudator/number-storage-service/internal/service"
+	"github.com/rogudator/number-storage-service/proto/number_storage"
 )
 
 type TransportGrpc struct {
