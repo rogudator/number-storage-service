@@ -4,6 +4,7 @@ package pb;
 
 option go_package = "./proto/number_storage";
 
+import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 message NumberResponse {
@@ -15,6 +16,15 @@ message NumberRequest {
 }
 
 service NumberStorageService {
-    rpc GetNumber (google.protobuf.Empty) returns (NumberResponse);
-    rpc UpdateNumber (NumberRequest) returns (NumberResponse);
+    rpc GetNumber (google.protobuf.Empty) returns (NumberResponse) {
+        option (google.api.http) = {
+            get: "/number"
+        };
+    };
+    rpc UpdateNumber (NumberRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            put: "/number",
+            body: "*"
+        };
+    };
 }
