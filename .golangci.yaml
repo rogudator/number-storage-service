@@ -1,0 +1,43 @@
+run:
+  concurrency: 4
+  timeout: 1m
+  issues-exit-code: 1
+  tests: false
+  skip-dirs:
+    - vendor
+    - tests
+  skip-files:
+    - tools.go
+  modules-download-mode: readonly
+  allow-parallel-runners: true
+  go: 1.20
+linters:
+  fast: false
+  enable-all: true
+  disable:
+    - nlreturn
+    - wsl
+    - gci
+    - wrapcheck
+    - forbidigo
+    - gofumpt
+    - exhaustivestruct
+    - varnamelen
+    - nosnakecase
+    - execinquery
+
+    # deprecated or disabled because of go1.18 (generics)
+    - scopelint
+    - maligned
+    - golint
+    - exhaustivestruct
+    - interfacer
+    - rowserrcheck
+    - sqlclosecheck
+    - structcheck
+    - wastedassign
+    - nosnakecase
+    - ifshort
+    - contextcheck
+    - varcheck
+    - deadcode
