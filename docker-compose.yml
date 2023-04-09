@@ -1,0 +1,57 @@
+services:
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: "swagger"
+    ports:
+      - "8008:8080"
+    volumes:
+      - ./swagger/number_storage.swagger.json:/openapi.json
+    environment:
+      SWAGGER_JSON: /openapi.json
+  
+  db:
+    image: postgres:latest
+    networks:
+            new:
+                aliases:
+                    - database
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+        - number-storage-volume:/var/lib/postgresql/data
+    ports:
+        - "5432:5432"
+    
+  migrate:
+    image: migrate/migrate
+    networks:
+        - new
+    volumes:
+        - ./migrations:/migrations
+    command: ["-path", "/migrations", "-database",  "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}?sslmode=disable", "up"]
+    links: 
+        - db
+
+  nss-container:
+    container_name: nss-cont
+    build:
+      context: .
+      dockerfile: dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    env_file:
+      - .env
+    networks:
+      - new
+
+networks:
+  new:
+
+volumes:
+  number-storage-volume:
