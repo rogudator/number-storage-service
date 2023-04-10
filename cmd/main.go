@@ -21,18 +21,25 @@ import (
 )
 
 func main() {
+	// First we initialize logger. It is logging all the information to logs folder.
 	log := logger.NewLogger()
 	log.Info("Starting number-service-storage...")
 
+	// Connecting to database
 	db, err := repository.NewPosgresDB(initConfig())
 	if err != nil {
 		log.Fatal("failed to connect to database: ", err)
 	}
-	
+
+	// Project is seperated in three layers. It makes it easier for dependency injection.
+	// Repository layer is repsonsible for database communication.
 	repos := repository.NewRepository(db)
+	// Service layer stores business logic.
 	services := service.NewService(repos)
+	// Transport layer recieves requests and sends responds.
 	api := transport.NewTransport(services)
 
+	// Make a listener for app shutdown signal.
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig,
 		syscall.SIGINT,
@@ -40,8 +47,10 @@ func main() {
 		syscall.SIGQUIT,
 		os.Interrupt)
 
+	// We start REST api and gRPC api concurrently. If something
+	// goes wrong on any goroutine we have error channel to shutdown
+	// service gracefully.
 	errChannel := make(chan error)
-
 	grpcServer := runGrpc(api, log, errChannel)
 	restServer := runRest(api, log, errChannel)
 
@@ -52,6 +61,7 @@ func main() {
 		log.Error("Got unexpected error: ", err)
 	}
 
+	// Graceful shutdown in case of REST or gRPC malfunction
 	if restServer != nil {
 		if err := restServer.Shutdown(context.Background()); err != nil {
 			closeDB(db, log)
@@ -67,6 +77,7 @@ func main() {
 
 }
 
+// This function is needed to start gRPC api concurrently.
 func runGrpc(api *transport.Transport, log *zap.SugaredLogger, errCh chan error) *grpc.Server {
 
 	listen, err := net.Listen("tcp", "0.0.0.0:50051")
@@ -88,6 +99,7 @@ func runGrpc(api *transport.Transport, log *zap.SugaredLogger, errCh chan error)
 	return gRPCServer
 }
 
+// This function is needed to start REST api concurrently.
 func runRest(api *transport.Transport, log *zap.SugaredLogger, errCh chan error) *http.Server {
 
 	mux := runtime.NewServeMux()
@@ -112,6 +124,7 @@ func runRest(api *transport.Transport, log *zap.SugaredLogger, errCh chan error)
 	return &restServer
 }
 
+// Configuration for database connection
 func initConfig() repository.Config {
 	return repository.Config{
 		Host:     "database",

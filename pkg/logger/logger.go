@@ -11,6 +11,7 @@ import (
 )
 var logInitFail string = "{\"level\":\"error\",\"ts\":\"%v\",\"caller\":\"pkg/logger/logger.go\",\"msg\":\"Error while creating logger %v\"}"
 
+// Initializig logger with functionality of writing logs to a file.
 func NewLogger() *zap.SugaredLogger {
 	loggerConfig := zap.NewProductionEncoderConfig()
 	loggerConfig.EncodeTime = zapcore.ISO8601TimeEncoder

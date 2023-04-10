@@ -15,6 +15,7 @@ type NumberStorage interface {
 	UpdateNumber(number int64) (error)
 }
 
+// This method gets stored number from db.
 func (r *NumberStoragePostgreSQL) GetNumber() (int64, error) {
 	query := `
 	SELECT number FROM storage
@@ -29,6 +30,7 @@ func (r *NumberStoragePostgreSQL) GetNumber() (int64, error) {
 	return number, nil
 }
 
+// This method gets the calculated new number and updates the stored number.
 func (r *NumberStoragePostgreSQL) UpdateNumber(number int64) (error) {
 	query := `
 	UPDATE storage
