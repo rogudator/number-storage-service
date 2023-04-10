@@ -4,9 +4,9 @@ package pb;
 
 option go_package = "./proto/number_storage";
 
+import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-import "protoc-gen-openapiv2/options/annotations.proto";
 
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
